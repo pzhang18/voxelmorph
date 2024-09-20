@@ -8,6 +8,7 @@ We have several VoxelMorph tutorials:
   - the main [VoxelMorph tutorial](http://tutorial.voxelmorph.net/) explains VoxelMorph and learning-based registration
   - a [deformable SynthMorph demo](https://colab.research.google.com/drive/1zaDnAJGUokS0knqWttuTgrRJMb6zxukI?usp=sharing) showing how to train a registration model without data
   - an [affine SynthMorph demo](https://colab.research.google.com/drive/1QClknfaZIYklBjmBy-nUn83h85bpo8r0?usp=sharing) on learning anatomy-aware and acquisition-agnostic affine registration
+  - a [CT-to-MRI SynthMorph demo](https://colab.research.google.com/drive/1aWbFiyQw5mtJbTglpniAOMimGo_l8BYP?usp=drive_link) clipping the Hounsfield scale for multi-modal registration
   - a [tutorial on training VoxelMorph](https://colab.research.google.com/drive/1ZefmWXBupRNsnIbBbGquhVDsk-7R7L1S?usp=sharing) on [OASIS data](https://github.com/adalca/medical-datasets/blob/master/neurite-oasis.md), which we processed and released for free for HyperMorph
   - an [additional small tutorial](https://colab.research.google.com/drive/1V0CutSIfmtgDJg1XIkEnGteJuw0u7qT-#scrollTo=h1KXYz-Nauwn) on warping annotations together with images
   - another tutorial on [template (atlas) construction](https://colab.research.google.com/drive/1SkQbrWTQHpQFrG4J2WoBgGZC9yAzUas2?usp=sharing) with VoxelMorph
