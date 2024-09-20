@@ -418,37 +418,33 @@ def surf_semisupervised(
         yield (inputs, outputs)
 
 
-def synthmorph(label_maps, batch_size=1, same_subj=False, flip=True):
+def synthmorph(label_maps, batch_size=1, same_subj=False, flip=False):
     """
     Generator for SynthMorph registration.
 
     Parameters:
-        labels_maps: List of pre-loaded ND label maps, each as a NumPy array.
-        batch_size: Batch size. Default is 1.
-        same_subj: Whether the same label map is returned as the source and target for further
-            augmentation. Default is False.
-        flip: Whether axes are flipped randomly. Default is True.
+        labels_maps: List of preloaded ND label maps without batch or feature dimension.
+        batch_size: Batch size.
+        same_subj: Return the same label map both as source and target.
+        flip: Randomly flip the same axes of the source and target label maps.
+
+    Yields:
+        Source and target label maps as a tuple and "true" dummy value that SynthMorph training
+        will ignore, as it is unsupervised.
     """
-    in_shape = label_maps[0].shape
-    num_dim = len(in_shape)
-
-    # "True" moved image and warp, that will be ignored by SynthMorph losses.
-    void = np.zeros((batch_size, *in_shape, num_dim), dtype='float32')
-
+    label_maps = np.expand_dims(label_maps, axis=-1)
     rand = np.random.default_rng()
-    prop = dict(replace=False, shuffle=False)
-    while True:
-        ind = rand.integers(len(label_maps), size=2 * batch_size)
-        x = [label_maps[i] for i in ind]
 
+    num_dim = label_maps.ndim - 2
+    prop = dict(replace=False, shuffle=False)
+
+    while True:
+        x = rand.choice(label_maps, size=2 * batch_size)
         if same_subj:
-            x = x[:batch_size] * 2
-        x = np.stack(x)[..., None]
+            x[batch_size:] = x[:batch_size]
 
         if flip:
             axes = rand.choice(num_dim, size=rand.integers(num_dim + 1), **prop)
             x = np.flip(x, axis=axes + 1)
 
-        src = x[:batch_size, ...]
-        trg = x[batch_size:, ...]
-        yield [src, trg], [void] * 2
+        yield (x[:batch_size], x[batch_size:]), np.zeros(0)
